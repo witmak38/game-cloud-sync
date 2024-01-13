@@ -4,8 +4,18 @@ const { ipcRenderer } = require('electron')
 
 // delete todo by its text value ( used below in event listener)
 const deleteTodo = (e) => {
+  console.log("deleteTodo")
   ipcRenderer.send('delete-todo', e.target.textContent)
+
+
 }
+const deleteGame = (e) => {
+  let game_id = e.target.getAttribute('data-id');
+  console.log(game_id);
+  ipcRenderer.send('delete-game', game_id)
+
+}
+
 
 // create add todo window button
 document.getElementById('createTodoBtn').addEventListener('click', () => {
@@ -27,6 +37,7 @@ document.getElementById('save_game').addEventListener('click', () => {
 
 
 // вывод списка игр при старте программы
+
 ipcRenderer.on('update-gameList', (event, gameList) => {
 
   for (const child of Array.from(listContainer.children)) {
@@ -49,6 +60,31 @@ ipcRenderer.on('update-gameList', (event, gameList) => {
     listContainer.appendChild(listEntry)
   };
 
+})
+
+
+// on receive todos
+ipcRenderer.on('update-gameList', (event, games) => {
+
+  // get the todoList ul
+  const gameList = document.getElementById('gameList')
+
+  // create html string
+  const gameItems = games.reduce((html, game) => {
+
+    html += `<li class="game-item" data-id="${game.id}">${game.name}</li>`
+
+    return html
+  }, '')
+
+  // set list html to the todo items
+  gameList.innerHTML = gameItems
+
+  // add click handlers to delete the clicked todo
+  gameList.querySelectorAll('.game-item').forEach(item => {
+    //console.log(item);
+    item.addEventListener('click', deleteGame)
+  })
 })
 
 

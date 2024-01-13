@@ -10,7 +10,7 @@ document.getElementById('todoForm').addEventListener('submit', (evt) => {
   const input = evt.target[0]
 
   // send todo to main process
-  ipcRenderer.send('add-todo', input.value)
+  ipcRenderer.send('add-game', input.value)
 
   // reset input
   input.value = ''

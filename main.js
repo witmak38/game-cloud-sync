@@ -45,15 +45,21 @@ function setGame(name, path) {
 
 }
 
+function getGames() {
 
-let gameList
-db.getAll('config-games', location_db, (succ, data) => {
-  // succ - boolean, tells if the call is successful
-  // data - array of objects that represents the rows.
+  let gameList
+  db.getAll('config-games', location_db, (succ, data) => {
+    // succ - boolean, tells if the call is successful
+    // data - array of objects that represents the rows.
 
-  gameList = data
-})
-console.log(gameList);
+    gameList = data
+  })
+  console.log(gameList);
+  return gameList
+
+}
+
+
 
 function main() {
   //setGame("Diablo 7", "path_to_game"); //добавление игры в конфиг
@@ -70,7 +76,7 @@ function main() {
 
   // initialize with todos
   mainWindow.once('show', () => {
-    mainWindow.webContents.send('update-gameList', gameList)
+    mainWindow.webContents.send('update-gameList', getGames())
     mainWindow.webContents.openDevTools();
     mainWindow.webContents.send('todos', todosData.todos)
   })
@@ -129,12 +135,47 @@ function main() {
     mainWindow.send('todos', updatedTodos)
   })
 
+  ipcMain.on('add-game', (event, game) => {
+
+    setGame(game, "3421")
+
+    function myFunc() {
+      let updatedGames = getGames()
+
+      mainWindow.send('update-gameList', updatedGames)
+    }
+    setTimeout(myFunc, 300);
+
+  })
+
+  ipcMain.on('delete-game', (event, game_id) => {
+    // const updatedTodos = todosData.deleteTodo(todo).todos
+    //console.log(game_id);
+
+    game_id = parseInt(game_id)
+
+    db.deleteRow('config-games', location_db, { 'id': game_id }, (succ, msg) => {
+      console.log(msg);
+      //console.log(game_id);
+    });
+
+    function myFunc() {
+      let updatedGames = getGames()
+      mainWindow.send('update-gameList', updatedGames)
+    }
+    setTimeout(myFunc, 300);
+
+  })
+
   // delete-todo from todo list window
   ipcMain.on('delete-todo', (event, todo) => {
+
     const updatedTodos = todosData.deleteTodo(todo).todos
 
     mainWindow.send('todos', updatedTodos)
   })
+
+
 }
 
 app.on('ready', main)

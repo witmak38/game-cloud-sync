@@ -6,27 +6,7 @@ Currently in-progress; goal is to have manual cloud syncing first and then build
 
 # Current Progress
 
-The app has currently not yet reached functionality.
-Features:
-* Add file
-* Program shows file metadata in your saved list
 
-Current Bugs:
-* After adding two files, on the third one it duplicates the first file
-* Uncaught (in promise) TypeError: Failed to fetch; oops???
-
-TODO:
-* Make program remember which files you have added to it on refresh
-* Program syncing directories for games that have changing save file names
-* Connect file functionality to Dropbox
-* Figure out how to add a file smoothly on a second computer when you have already uploaded it on a first computer
-* Add ability to upload/pull files from Dropbox
-
-Future Extra Features:
-* Auto-sync files on startup depending on whether local/cloud file is newer
-    * Auto-sync files upon opening/closing game
-* Ability to specify which game a save file is for
-    * Auto-detect games
 
 # Instructions
 

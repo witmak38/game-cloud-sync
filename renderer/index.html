@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Electron Todo</title>
+    <link rel="stylesheet" href="../node_modules/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-10">
+          <h1 class="text-center">Todos</h1>
+          <button id="addGameBtn" type="button" class="btn">
+           Game Add
+          </button>
+          <button id="save_game" type="button" class="btn">
+            Create a New Todo
+          </button>
+          <div id="list_container" class="list_container">
+            <div class="example_entry">
+              <p class="property">Game</p>
+              <p class="property">Path</p>
+              <p class="property">Last Modified Locally</p>
+              <p class="property">Last Modified Cloud</p>
+              <p class="property">Upload to Cloud</p>
+              <p class="property">Download to Local</p>
+              <p class="remove_game">Delete Game</p>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+          <button id="createTodoBtn" type="button" class="btn">
+            Create a New Todo
+          </button>
+          <ul id="todoList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+
+</html>

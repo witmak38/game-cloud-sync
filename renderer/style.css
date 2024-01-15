@@ -33,6 +33,10 @@ p {
   padding: 0px 10px;
 }
 
+.property__path {
+  min-width: 245px;
+}
+
 .list_container {
   display: grid;
   grid-template-rows: 80px 50px;

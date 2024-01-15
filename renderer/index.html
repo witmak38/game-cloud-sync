@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Electron Todo</title>
+    <title>Electron Game Sync</title>
     <link rel="stylesheet" href="../node_modules/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
@@ -12,39 +12,29 @@
     <div class="container">
       <div class="columns">
         <div class="column col-10">
-          <h1 class="text-center">Todos</h1>
+          <h1 class="text-center">Game Sync</h1>
           <button id="addGameBtn" type="button" class="btn">
-           Game Add
+           Добавить игру
           </button>
-          <button id="save_game" type="button" class="btn">
-            Create a New Todo
+          <!--<button id="createTodoBtn" type="button" class="btn">
+            Создать заметку
           </button>
-          <div id="list_container" class="list_container">
+        -->
+          <div id="games" class="list_container">
             <div class="example_entry">
-              <p class="property">Game</p>
-              <p class="property">Path</p>
-              <p class="property">Last Modified Locally</p>
-              <p class="property">Last Modified Cloud</p>
-              <p class="property">Upload to Cloud</p>
-              <p class="property">Download to Local</p>
-              <p class="remove_game">Delete Game</p>
+              <p class="property">Название</p>
+              <p class="property property__path">Путь</p>
+              <p class="property">Обновлено</p>
+              <p class="property">облако</p>
+              <p class="property">Up</p>
+              <p class="property">Down</p>
+              <p class="remove_game">Del</p>
+            </div>
+            <div id="gameList">
             </div>
           </div>
 
-
-
-          <ul id="gameList"></ul>
-
-
-
-
-
-
-
-          <button id="createTodoBtn" type="button" class="btn">
-            Create a New Todo
-          </button>
-          <ul id="todoList"></ul>
+          
         </div>
       </div>
     </div>

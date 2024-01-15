@@ -54,7 +54,7 @@ function getGames() {
 
     gameList = data
   })
-  console.log(gameList);
+  // console.log(gameList);
   return gameList
 
 }
@@ -137,7 +137,7 @@ function main() {
 
   ipcMain.on('add-game', (event, game) => {
 
-    setGame(game, "3421")
+    setGame(game[0], game[1])
 
     function myFunc() {
       let updatedGames = getGames()

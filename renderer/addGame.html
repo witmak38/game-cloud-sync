@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset="UTF-8">
-    <title>Add Todo</title>
-    <link rel="stylesheet" href="../node_modules/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="style.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Add Todo</title>
+  <link rel="stylesheet" href="../node_modules/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
 
-  <body>
-    <div class="container">
-      <div class="columns">
-        <div class="column col-10">
-          <h1 class="text-center">Добавить игру</h1>
+<body>
+  <div class="container">
+    <div class="columns">
+      <div class="column col-10">
+        <h1 class="text-center">Добавить игру</h1>
 
-          <form id="todoForm">
-            <div class="form-group">
-              
-              
-              <input class="form-input" type="text" name="add-input" placeholder="I have to...">
-              <input class="form-path-input" id="add-path" type="file" name="add-path" webkitdirectory = "true" directory/>
-              
-            </div>
+        <form id="todoForm">
+          <div class="form-group">
 
-            <button class="btn">Сохранить</button>
-          </form>
 
-        </div>
+            <input class="form-input" type="text" id="add-input" name="add-input" placeholder="I have to...">
+            <!-- <input class="form-path-input" id="add-path1" type="file" name="add-path" webkitdirectory="true"
+              directory /> -->
+            <button type="button" class="btn" id="add-path">open</button>
+            <p id="path"></p>
+
+          </div>
+
+          <button class="btn" id="save_game_conf">Сохранить</button>
+        </form>
+
       </div>
     </div>
+  </div>
 
-    <script src="./addGame.js"></script>
-  </body>
+  <script src="./addGame.js"></script>
+</body>
 
 </html>

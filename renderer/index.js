@@ -1,6 +1,9 @@
 'use strict'
+//const { ipcRenderer } = require('electron')
+//const { ipcRenderer } = require('electron')
 var listContainer = document.getElementById('list_container')
-const { ipcRenderer } = require('electron')
+var syncGameBtn = document.getElementById('syncGameBtn')
+
 
 // delete todo by its text value ( used below in event listener)
 /*const deleteTodo = (e) => {
@@ -18,15 +21,31 @@ const deleteGame = (e) => {
 }
 
 
+syncGameBtn.addEventListener('click', () => {
+  console.log('sync click');
+  //let gameName = '3111111';
+  //window.electronAPI.saveGame(gameName);
+  //ipcRenderer.send('syncGame')
+  window.electronAPI.syncGame()
+
+  //
+
+});
+
 // create add todo window button
 /*document.getElementById('createTodoBtn').addEventListener('click', () => {
   ipcRenderer.send('add-todo-window')
 })*/
 
 document.getElementById('addGameBtn').addEventListener('click', () => {
+  //ipcRenderer.send('add-game-window')
+  window.electronAPI.addGameWindow()
+})
+/*
+document.getElementById('addGameBtn').addEventListener('click', () => {
   ipcRenderer.send('add-game-window')
 })
-
+*/
 /*
 document.getElementById('save_game').addEventListener('click', () => {
   console.log('save click');
@@ -66,7 +85,8 @@ ipcRenderer.on('update-gameList', (event, gameList) => {
 */
 
 // on receive todos
-ipcRenderer.on('update-gameList', (event, games) => {
+window.electronAPI.updateGameList((event, games) => {
+  //ipcRenderer.on('update-gameList', (event, games) => {
 
   // get the todoList ul
   const gameList = document.getElementById('gameList')
@@ -74,12 +94,12 @@ ipcRenderer.on('update-gameList', (event, games) => {
   // create html string
   const gameItems = games.reduce((html, game) => {
 
-    html += `<div class="list_entry" data-id="${game.id}">
+    html += `<div class="item__table list_entry" data-id="${game.id}">
    
-      <p> ${game.name}</p>
-      <p class="property__path"> ${game.path}</p>
-      <p>31.12.2024</p>
-      <p>10.12.2024</p>
+    <div><span> ${game.name}</span></div>
+      
+      <div class="local"><span>31.12.2024</span></div>
+      <div class="cloud"><span>10.12.2024</span></div>
       <button class="btn">Up</button>
       <button class="btn">Down</button>
       <button class="btn del" data-id="${game.id}">Del</button>
@@ -87,6 +107,7 @@ ipcRenderer.on('update-gameList', (event, games) => {
 
     return html
   }, '')
+
 
   // set list html to the todo items
   gameList.innerHTML = gameItems

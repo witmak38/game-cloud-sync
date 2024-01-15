@@ -1,5 +1,5 @@
 'use strict'
-
+//import { ipcRenderer } from 'electron'
 const path = require('path')
 const rootPath = require('electron-root-path').rootPath;
 //const location = path.join(rootPath, 'package.json');
@@ -7,8 +7,14 @@ const { app, ipcMain } = require('electron')
 
 const Window = require('./Window')
 const DataStore = require('./DataStore')
-const storage = require('electron-json-storage');
-const db = require('electron-db');
+const storage = require('electron-json-storage')
+const db = require('electron-db')
+const fs = require('fs')
+const { dialog } = require('electron')
+
+
+
+
 require('electron-reload')(__dirname)
 
 // create a new todo store name "Todos Main"
@@ -60,9 +66,40 @@ function getGames() {
 }
 
 
+function copyGameFiles(src, dest) {
+  try {
+    fs.cpSync(src, dest, {
+      recursive: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+function syncGame() {
+  console.log("syncGame run")
+  var gameList = getGames()
+  // console.log(gameList[0])
+
+  gameList.forEach(item => {
+    item.path = item.path.replace(/\\/g, "/")
+    //console.log(item.path)
+    //console.log(rootPath + '/SaveGames/')
+    copyGameFiles(item.path, rootPath + '/SaveGames/' + item.name)
+    console.log('syncGame complete')
+  })
+
+}
+//syncGame()
+
 
 function main() {
+
+
+
   //setGame("Diablo 7", "path_to_game"); //добавление игры в конфиг
+  //copyGameFiles("C:/Users/User/Documents/My Games/Titan Quest - Immortal Throne", "D:/DEV/MY/Electron/game-cloud-sync-main/SaveGames/Titan Quest - Immortal Throne")
+
   // todo list window
   let mainWindow = new Window({
     file: path.join('renderer', 'index.html')
@@ -174,6 +211,50 @@ function main() {
 
     mainWindow.send('todos', updatedTodos)
   })
+
+  ipcMain.on('syncGame', (event) => {
+
+    // const updatedTodos = todosData.deleteTodo(todo).todos
+    syncGame()
+    // mainWindow.send('todos', updatedTodos)
+  })
+
+  ipcMain.on('event-win-close', () => {
+    if (addTodoWin) addTodoWin.close();
+    console.log('window closed')
+  });
+
+
+
+  ipcMain.on('hey-open-my-dialog-now', () => {
+    //dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
+    dialog.showOpenDialog(addTodoWin, {
+      properties: ['openFile', 'openDirectory']
+    }).then(result => {
+      // console.log(result.canceled)
+      //console.log(result.filePaths)
+
+      addTodoWin.send('path', result.filePaths)
+
+    }).catch(err => {
+      //console.log(err)
+    })
+    /*
+        let options = { properties: ["openDirectory"] }
+    
+        //Synchronous
+        let dir = dialog.showOpenDialog(options)
+        console.log(dir)
+    
+        //Or asynchronous - using callback
+        dialog.showOpenDialog(options, (dir) => {
+          console.log(dir)
+        })
+    
+    */
+  });
+
+
 
 
 }

@@ -1,15 +1,16 @@
 'use strict'
 
 const { BrowserWindow } = require('electron')
-
+const path = require('path')
 // default window settings
 const defaultProps = {
-  width: 1500,
-  height: 800,
+  width: 1700,
+  height: 600,
   show: false,
 
   // update for electron V5+
   webPreferences: {
+    preload: path.join(__dirname, 'preload.js'),
     nodeIntegration: true,
     devTools: true
   }

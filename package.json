@@ -1,16 +1,21 @@
 {
-  "name": "electron-todo",
-  "version": "0.1.0",
-  "description": "A simple educational todo app",
+  "name": "GameSaveSync",
+  "version": "0.0.1",
+  "description": "A simple GameSaveSync app",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "electron-builder",
+    "build-win": "electron-builder -w",
+    "build-mac": "electron-builder -m",
+    "build-linux": "electron-builder -l"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^26.0.0"
+    "electron": "^26.0.0",
+    "electron-builder": "^24.9.1"
   },
   "dependencies": {
     "electron-db": "^0.15.7",
@@ -20,5 +25,25 @@
     "electron-store": "^2.0.0",
     "fs": "^0.0.1-security",
     "spectre.css": "^0.5.3"
+  },
+  "build": {
+    "productName": "GameSaveSync",
+    "appId": "GameSaveSync",
+    "electronVersion": "0.0.1",
+    "win": {
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ],
+      "icon": "test.ico"
+    },
+    "portable": {
+      "artifactName": "GameSaveSync.exe"
+    },
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    }
   }
 }

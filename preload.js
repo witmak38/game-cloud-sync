@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     saveGame: (gameName) => ipcRenderer.invoke('saveGame', gameName),
 
+    openNotif: (title, body) => ipcRenderer.send('notif', title, body),
+
     //new func
     eLog: (message) => ipcRenderer.on('eLog', message),
     syncGame: () => ipcRenderer.send('syncGame'),

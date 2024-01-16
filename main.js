@@ -16,18 +16,14 @@ const { Notification } = require('electron')
 const NOTIFICATION_TITLE = 'Basic Notification'
 const NOTIFICATION_BODY = 'Notification from the Main process'
 
+app.setAppUserModelId(process.execPath)
+
 require('electron-reload')(__dirname)
 
 // create a new todo store name "Todos Main"
 const todosData = new DataStore({ name: 'Todos Main' })
 
-//storage.setDataPath(rootPath + '/config');
-
-//const location_db = path.join(__dirname + '/config', '')
-
 const location_db = path.resolve('.') + '/config'
-
-
 
 
 storage.setDataPath(rootPath + '/config');
@@ -101,7 +97,6 @@ var elog = ''
 function syncGame() {
   console.log("syncGame run")
   var gameList = getGames()
-  // console.log(gameList[0])
 
   gameList.forEach(item => {
     item.path = item.path.replace(/\\/g, "/")
@@ -164,13 +159,11 @@ function main() {
 
   })
 
-  //syncGame()
-  /*
-    ipcMain.on('save_game', (event, nameGame, pathGame) => {
-      console.log(nameGame);
-      console.log(pathGame);
-    })
-  */
+
+
+
+
+
 
   // создаем окно для добавления игр
   ipcMain.on('add-game-window', () => {
@@ -191,6 +184,9 @@ function main() {
       })
     }
   })
+
+
+
 
   // create add todo window
   ipcMain.on('add-todo-window', () => {
@@ -213,6 +209,13 @@ function main() {
   })
 
 
+  ipcMain.on('notif', (event, title, body) => {
+    new Notification({
+      title: title,
+      body: body
+    }).show();
+
+  })
   // add-todo from add todo window
   ipcMain.on('add-todo', (event, todo) => {
     const updatedTodos = todosData.addTodo(todo).todos
@@ -270,7 +273,6 @@ function main() {
   })
 
 
-
   ipcMain.on('event-win-close', () => {
     if (addTodoWin) addTodoWin.close();
     console.log('window closed')
@@ -291,19 +293,7 @@ function main() {
     }).catch(err => {
       //console.log(err)
     })
-    /*
-        let options = { properties: ["openDirectory"] }
-    
-        //Synchronous
-        let dir = dialog.showOpenDialog(options)
-        console.log(dir)
-    
-        //Or asynchronous - using callback
-        dialog.showOpenDialog(options, (dir) => {
-          console.log(dir)
-        })
-    
-    */
+
   });
 
 

@@ -12,6 +12,13 @@ var syncGameBtn = document.getElementById('syncGameBtn')
 
 
 }*/
+
+
+
+
+
+
+
 const deleteGame = (e) => {
   //console.log(e.target);
   let game_id = e.target.getAttribute('data-id');
@@ -28,7 +35,12 @@ syncGameBtn.addEventListener('click', () => {
   //ipcRenderer.send('syncGame')
   window.electronAPI.syncGame()
 
-  //
+
+  window.electronAPI.openNotif(
+    "Заголовок",
+    "Текст уведомления"
+  )
+
 
 });
 

@@ -9,24 +9,17 @@ var syncGameBtn = document.getElementById('syncGameBtn')
 /*const deleteTodo = (e) => {
   console.log("deleteTodo")
   ipcRenderer.send('delete-todo', e.target.textContent)
-
-
 }*/
-
-
-
-
-
 
 
 const deleteGame = (e) => {
   //console.log(e.target);
   let game_id = e.target.getAttribute('data-id');
   // console.log(game_id);
-  ipcRenderer.send('delete-game', game_id)
+  //ipcRenderer.send('delete-game', game_id)
+  window.electronAPI.delGame(game_id)
 
 }
-
 
 syncGameBtn.addEventListener('click', () => {
   console.log('sync click');
@@ -53,8 +46,6 @@ document.getElementById('addGameBtn').addEventListener('click', () => {
   //ipcRenderer.send('add-game-window')
   window.electronAPI.addGameWindow()
 })
-
-
 
 window.electronAPI.eLog((event, message) => {
   console.log(message)

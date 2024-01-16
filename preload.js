@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     updateGameList: (games) => ipcRenderer.on('update-gameList', games),
 
     saveGame: (gameName) => ipcRenderer.invoke('saveGame', gameName),
+    delGame: (game_id) => ipcRenderer.send('delete-game', game_id),
 
     openNotif: (title, body) => ipcRenderer.send('notif', title, body),
 

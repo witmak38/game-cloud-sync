@@ -11,7 +11,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveGame: (gameName) => ipcRenderer.invoke('saveGame', gameName),
 
     //new func
+    eLog: (message) => ipcRenderer.on('eLog', message),
     syncGame: () => ipcRenderer.send('syncGame'),
+
     addGameWindow: () => ipcRenderer.send('add-game-window'),
     addGame: (input) => ipcRenderer.send('add-game', input),
     dialogFolder: () => ipcRenderer.send('dialog-folder'),

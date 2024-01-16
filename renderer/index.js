@@ -41,6 +41,12 @@ document.getElementById('addGameBtn').addEventListener('click', () => {
   //ipcRenderer.send('add-game-window')
   window.electronAPI.addGameWindow()
 })
+
+
+
+window.electronAPI.eLog((event, message) => {
+  console.log(message)
+})
 /*
 document.getElementById('addGameBtn').addEventListener('click', () => {
   ipcRenderer.send('add-game-window')

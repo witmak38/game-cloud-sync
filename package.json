@@ -1,5 +1,5 @@
 {
-  "name": "GameSaveSync",
+  "name": "same-save-sync",
   "version": "0.0.1",
   "description": "A simple GameSaveSync app",
   "main": "main.js",
@@ -24,17 +24,22 @@
     "electron-root-path": "^1.1.0",
     "electron-store": "^2.0.0",
     "fs": "^0.0.1-security",
+    "node-cron": "^3.0.3",
     "spectre.css": "^0.5.3"
   },
   "build": {
     "productName": "GameSaveSync",
     "appId": "GameSaveSync",
-    "electronVersion": "0.0.1",
+    "electronVersion": "26.0.0",
     "win": {
       "target": [
         "nsis",
         "portable",
         "zip"
+      ],
+      "extraFiles": [
+        "config",
+        "SaveGames"
       ],
       "icon": "test.ico"
     },

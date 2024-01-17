@@ -42,7 +42,7 @@
         "config",
         "SaveGames"
       ],
-      "icon": "test.ico"
+      "icon": "icons/app.png"
     },
     "portable": {
       "artifactName": "GameSaveSync.exe"

@@ -3,9 +3,10 @@
 const path = require('path')
 const rootPath = require('electron-root-path').rootPath;
 //const location = path.join(rootPath, 'package.json');
-const { app, ipcMain } = require('electron')
+const { app, ipcMain, Menu, Tray } = require('electron')
 const async = require('async');
 const Window = require('./Window')
+
 const DataStore = require('./DataStore')
 const storage = require('electron-json-storage')
 const db = require('electron-db')
@@ -17,6 +18,7 @@ const NOTIFICATION_TITLE = 'Basic Notification'
 const NOTIFICATION_BODY = 'Notification from the Main process'
 
 app.setAppUserModelId(process.execPath)
+
 
 require('electron-reload')(__dirname)
 
@@ -133,15 +135,7 @@ function syncGame() {
 }
 
 
-
-
 function main() {
-
-
-
-
-
-
 
 
   function checkGameListToUpdate() {
@@ -205,6 +199,84 @@ function main() {
     // mainWindow.webContents.send('e-log', eLog("test message"))
 
   })
+
+  let tray = null;
+
+
+
+  mainWindow.on('close', function (event) {
+    if (!app.isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+
+    if (tray) { return mainWindow.hide(); }
+
+    //  tray documentation at - https://github.com/electron/electron/blob/main/docs/api/menu-item.md
+    tray = new Tray('icons/app.png');
+    const template = [
+      {
+        label: 'CodeSpeedy',
+        icon: 'icons/app.png',
+        enabled: false,
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Show App', click: function () {
+          mainWindow.show();
+        },
+      },
+      {
+        label: 'Quit', click: function () {
+          mainWindow.close();
+        },
+      },
+    ];
+    const contextMenu = Menu.buildFromTemplate(template);
+    tray.setContextMenu(contextMenu);
+    tray.setToolTip('CodeSpeedy');
+    mainWindow.hide();
+
+    return false;
+  });
+
+
+
+  /*mainWindow.on('minimize', () => {
+
+    if (tray) { return mainWindow.hide(); }
+
+    //  tray documentation at - https://github.com/electron/electron/blob/main/docs/api/menu-item.md
+    tray = new Tray('icons/app.png');
+    const template = [
+      {
+        label: 'CodeSpeedy',
+        icon: 'icons/app.png',
+        enabled: false,
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Show App', click: function () {
+          mainWindow.show();
+        },
+      },
+      {
+        label: 'Quit', click: function () {
+          mainWindow.close();
+        },
+      },
+    ];
+    const contextMenu = Menu.buildFromTemplate(template);
+    tray.setContextMenu(contextMenu);
+    tray.setToolTip('CodeSpeedy');
+    mainWindow.hide();
+
+
+  })*/
 
 
 

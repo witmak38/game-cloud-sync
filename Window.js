@@ -7,7 +7,8 @@ const defaultProps = {
   width: 1700,
   height: 600,
   show: false,
-
+  // icon: __dirname + 'icons/app.png',
+  icon: path.join(__dirname, 'icons/app.png'),
   // update for electron V5+
   webPreferences: {
     preload: path.join(__dirname, 'preload.js'),

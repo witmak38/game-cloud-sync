@@ -4,7 +4,7 @@ const path = require('path')
 const rootPath = require('electron-root-path').rootPath;
 //const location = path.join(rootPath, 'package.json');
 const { app, ipcMain } = require('electron')
-
+const async = require('async');
 const Window = require('./Window')
 const DataStore = require('./DataStore')
 const storage = require('electron-json-storage')
@@ -48,6 +48,7 @@ function setGame(name, path) {
 
   obj.name = name;
   obj.path = path;
+  obj.time = "";
 
   if (db.valid('config-games', location_db)) {
     db.insertTableContent('config-games', location_db, obj, (succ, msg) => {
@@ -58,6 +59,27 @@ function setGame(name, path) {
   }
 
 }
+function setGameLastSync(name, time) {
+
+  var where = {
+    "name": name
+  };
+
+  var set = {
+    "time": time
+  }
+
+  if (db.valid('config-games', location_db)) {
+    db.updateRow('config-games', location_db, where, set, (succ, msg) => {
+      // succ - boolean, tells if the call is successful
+      console.log("Success: " + succ);
+      console.log("Message: " + msg);
+    });
+  }
+
+}
+
+
 
 function getGames() {
 
@@ -92,12 +114,11 @@ function eLog(message) {
 
 var elog = ''
 
-
+const desPath = path.resolve('.') + '/SaveGames/'
 
 function syncGame() {
   console.log("syncGame run")
   var gameList = getGames()
-
   gameList.forEach(item => {
     item.path = item.path.replace(/\\/g, "/")
     item.path = item.path.replace(/\\/g, "/")
@@ -111,33 +132,59 @@ function syncGame() {
 
 }
 
-function checkLastMod(path) {
-  fs.stat(path, (err, stats) => {
-    console.log(stats['ctime'])
-  });
-}
-
 
 
 
 function main() {
 
-  /*new Notification({
-    title: NOTIFICATION_TITLE,
-    body: NOTIFICATION_BODY
-  }).show()
 
-  cron.schedule('1 * * * * *', () => {
-    console.log('start scheduler')
-    let time = new Date();
-    console.log(time)
-    checkLastMod(path)
-    console.log('running a task every 1 min');
-  });
-*/
 
-  //setGame("Diablo 7", "path_to_game"); //добавление игры в конфиг
-  //copyGameFiles("C:/Users/User/Documents/My Games/Titan Quest - Immortal Throne", "D:/DEV/MY/Electron/game-cloud-sync-main/SaveGames/Titan Quest - Immortal Throne")
+
+
+
+
+
+  function checkGameListToUpdate() {
+
+    console.log('checkGameListToUpdate start')
+
+
+
+    var gameList = getGames()
+
+
+
+    gameList.forEach(item => {
+
+      item.path = item.path.replace(/\\/g, "/")
+      var lastUpdateGame = fs.statSync(item.path, { throwIfNoEntry: false });
+      var newItemTime = lastUpdateGame['ctime']
+
+      lastUpdateGame = JSON.stringify(lastUpdateGame['ctime'])
+      item.time = JSON.stringify(item.time)
+
+
+      if (item.time != lastUpdateGame) {
+        new Notification({
+          title: "Синхронизация сохранений",
+          body: item.name
+        }).show()
+        let dPath = path.resolve('.') + '/SaveGames/' + item.name
+        copyGameFiles(item.path, dPath)
+        setGameLastSync(item.name, newItemTime)
+
+      } else {
+      }
+
+      console.log('checkGameListToUpdate end')
+
+    })
+
+  }
+  setInterval(checkGameListToUpdate, 10000)
+
+
+
 
   // todo list window
   let mainWindow = new Window({
@@ -158,9 +205,6 @@ function main() {
     // mainWindow.webContents.send('e-log', eLog("test message"))
 
   })
-
-
-
 
 
 
@@ -216,6 +260,7 @@ function main() {
     }).show();
 
   })
+
   // add-todo from add todo window
   ipcMain.on('add-todo', (event, todo) => {
     const updatedTodos = todosData.addTodo(todo).todos

@@ -135,6 +135,65 @@ function syncGame() {
 }
 
 
+function get_folder(path) {
+
+  fs.readdir(path, function (err, files) {
+
+
+    files.forEach(file => {
+      //console.log(path + "/" + file);
+      let f = fs.statSync(path + "/" + file, { throwIfNoEntry: false });
+      console.log(f['ctime'])
+    });
+
+  });
+
+  return;
+}
+
+//get_folder("C:/Users/User/Documents/My Games/Terraria")
+
+function checkDirFiles(path, time) {
+  console.log("start checkDirFiles")
+  var result = ""
+  let files = ''
+  files = fs.readdirSync(path)
+  //console.log(files)
+
+  let groups = []
+  let i = 0
+  files.forEach(file => {
+    file = path + "/" + file
+    var lastUpdateGame = fs.statSync(file, { throwIfNoEntry: false });
+    var newItemTime = lastUpdateGame['ctime']
+
+    lastUpdateGame = JSON.stringify(lastUpdateGame['ctime'])
+
+    if (time != lastUpdateGame) {
+      groups[i] = 1
+    } else {
+      groups[i] = 0
+    }
+    i++
+  });
+
+
+  const even = (element) => element === 1;
+  //console.log(groups.some(even));
+  return groups.some(even)
+
+
+
+  console.log("end checkDirFiles")
+
+}
+
+function arrayMax(arr) {
+  return arr.reduce(function (p, v) {
+    return (p > v ? p : v);
+  });
+}
+
 function main() {
 
 
@@ -142,23 +201,59 @@ function main() {
 
     console.log('checkGameListToUpdate start')
 
-
-
     var gameList = getGames()
-
-
 
     gameList.forEach(item => {
 
       item.path = item.path.replace(/\\/g, "/")
-      var lastUpdateGame = fs.statSync(item.path, { throwIfNoEntry: false });
-      var newItemTime = lastUpdateGame['ctime']
 
-      lastUpdateGame = JSON.stringify(lastUpdateGame['ctime'])
-      item.time = JSON.stringify(item.time)
+      // checkDirFiles(item.path, item.time)
 
+      console.log("start checkDirFiles")
+      //var result = ""
+      let files = ''
+      //let path = item.path
+      //let time = item.time
+      files = fs.readdirSync(item.path)
+      //console.log(files)
 
-      if (item.time != lastUpdateGame) {
+      let groups = []
+      let i = 0
+      let j = 0
+      var newItemTime = ''
+      let time = new Date(item.time)
+
+      files.forEach(file => {
+        file = item.path + "/" + file
+        var lastUpdateGame = fs.statSync(file, { throwIfNoEntry: false });
+        lastUpdateGame = lastUpdateGame['ctime']
+
+        lastUpdateGame = new Date(lastUpdateGame)
+
+        if (time.getTime() != lastUpdateGame.getTime()) {
+          groups[i] = lastUpdateGame.getTime()
+
+        } else {
+          groups[i] = 0
+        }
+        i++
+      });
+
+      newItemTime = arrayMax(groups)
+
+      console.log(newItemTime)
+      console.log(time.getTime())
+
+      if (newItemTime >= time.getTime()) {
+
+        console.log("true")
+      } else {
+        console.log("false")
+      }
+
+      console.log("end checkDirFiles")
+
+      if (newItemTime >= time.getTime()) {
         new Notification({
           title: "Синхронизация сохранений",
           body: item.name
@@ -166,8 +261,9 @@ function main() {
         let dPath = path.resolve('.') + '/SaveGames/' + item.name
         copyGameFiles(item.path, dPath)
         setGameLastSync(item.name, newItemTime)
-
+        console.log("update saves completed")
       } else {
+        console.log("not updated saves")
       }
 
       console.log('checkGameListToUpdate end')

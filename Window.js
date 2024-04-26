@@ -4,8 +4,12 @@ const { BrowserWindow } = require('electron')
 const path = require('path')
 // default window settings
 const defaultProps = {
-  width: 1700,
-  height: 600,
+  width: 700,
+  minWidth: 600,
+  maxWidth: 900,
+  height: 400,
+  minHeight: 400,
+  maxHeight: 700,
   show: false,
   // icon: __dirname + 'icons/app.png',
   icon: path.join(__dirname, 'icons/app.png'),
@@ -13,7 +17,7 @@ const defaultProps = {
   webPreferences: {
     preload: path.join(__dirname, 'preload.js'),
     nodeIntegration: true,
-    devTools: true
+    devTools: false
   }
 }
 

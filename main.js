@@ -13,7 +13,8 @@ const db = require('electron-db')
 const fs = require('fs')
 const { dialog } = require('electron')
 const cron = require('node-cron');
-const { Notification } = require('electron')
+const { Notification } = require('electron');
+const { emit } = require('process');
 const NOTIFICATION_TITLE = 'Basic Notification'
 const NOTIFICATION_BODY = 'Notification from the Main process'
 
@@ -129,7 +130,9 @@ function syncGame() {
     console.log(destPath)
     elog = destPath
     copyGameFiles(item.path, destPath)
+
     console.log('syncGame complete')
+
   })
 
 }
@@ -221,6 +224,10 @@ function main() {
       let i = 0
       let j = 0
       var newItemTime = ''
+
+      if (item.time === '') {
+        item.time = 0
+      }
       let time = new Date(item.time)
 
       files.forEach(file => {
@@ -271,14 +278,15 @@ function main() {
     })
 
   }
-  setInterval(checkGameListToUpdate, 10000)
+  setInterval(checkGameListToUpdate, 600000)
 
 
 
 
   // todo list window
   let mainWindow = new Window({
-    file: path.join('renderer', 'index.html')
+    file: path.join('renderer', 'index.html'),
+    maximizable: false
   })
 
   // add todo window
@@ -312,7 +320,7 @@ function main() {
     tray = new Tray('icons/app.png');
     const template = [
       {
-        label: 'CodeSpeedy',
+        label: 'GameSync',
         icon: 'icons/app.png',
         enabled: false,
       },
@@ -320,19 +328,28 @@ function main() {
         type: 'separator',
       },
       {
-        label: 'Show App', click: function () {
-          mainWindow.show();
+        label: 'Показать', click: function () {
+          //mainWindow.show();
+
+          mainWindow.show()
+
+        },
+      },
+      {
+        label: 'Скрыть', click: function () {
+          mainWindow.close();
         },
       },
       {
         label: 'Quit', click: function () {
+
           mainWindow.close();
         },
       },
     ];
     const contextMenu = Menu.buildFromTemplate(template);
     tray.setContextMenu(contextMenu);
-    tray.setToolTip('CodeSpeedy');
+    tray.setToolTip('GameSync');
     mainWindow.hide();
 
     return false;

@@ -100,10 +100,11 @@ function contextMenus() {
 
 
   app.whenReady().then(() => {
-
-    tray = new Tray('icons/app.png')
+    const iconPath = path.join(__dirname, 'icons/app1.png');
+    tray = new Tray(iconPath);
+    //tray = new Tray('icons/app1.png')
     const contextMenu = Menu.buildFromTemplate([
-      { label: 'GameSync', icon: 'icons/app.png', enabled: false },
+      { label: 'GameSync', icon: iconPath, enabled: false },
       { type: 'separator' },
       /*{
         label: 'Синхронизировать', click: function () {

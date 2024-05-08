@@ -20,7 +20,7 @@ const NOTIFICATION_TITLE = 'Basic Notification'
 const NOTIFICATION_BODY = 'Notification from the Main process'
 
 app.setAppUserModelId(process.execPath)
-app.setName("321");
+
 
 require('electron-reload')(__dirname)
 
@@ -356,9 +356,11 @@ function main() {
   })
 
 
-  ipcMain.on('notif', (event, title, body) => {
+  ipcMain.on('notif', (event, title, subtitle, body) => {
     new Notification({
+      icon: 'icons/app.png',
       title: title,
+      subtitle: subtitle,
       body: body
     }).show();
 

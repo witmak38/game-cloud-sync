@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveGame: (gameName) => ipcRenderer.invoke('saveGame', gameName),
     delGame: (game_id) => ipcRenderer.send('delete-game', game_id),
 
-    openNotif: (title, body) => ipcRenderer.send('notif', title, body),
+    openNotif: (title, subtitle, body) => ipcRenderer.send('notif', title, subtitle, body),
 
     //new func
     eLog: (message) => ipcRenderer.on('eLog', message),

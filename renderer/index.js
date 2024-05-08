@@ -31,6 +31,7 @@ syncGameBtn.addEventListener('click', () => {
 
   window.electronAPI.openNotif(
     "Синхронизация",
+    "",
     ""
   )
 
@@ -109,16 +110,16 @@ window.electronAPI.updateGameList((event, games) => {
     var date1 = date.toLocaleString()
 
 
-    html += `<div class="item__table list_entry" data-id="${game.id}">
+    html += `<tr class="item__tabl1 list_entry1" data-id="${game.id}">
    
-    <div><span> ${game.name}</span></div>
+    <td class="td_gamename"><span> ${game.name}</span></td>
       
       <!--<div class="local"><span>31.12.2024</span></div>-->
-      <div class="cloud"><span>${date1}</span></div>
+      <td class="td_syncdate"><span>${date1}</span></td>
       <!--<button class="btn">Up</button>
       <button class="btn">Down</button>-->
-      <button class="btn del" data-id="${game.id}">Удалить</button>
-    </div>`
+      <td class="th_action"><button class="btn del" data-id="${game.id}">Удалить</button></td>
+    </tr></tr>`
 
     return html
   }, '')

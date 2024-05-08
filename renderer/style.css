@@ -55,56 +55,6 @@ p {
   background-color: lightpink;
 }
 
-.list_entry {
-  background-color: lightblue;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.head__table,
-.body__table .item__table {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  width: 100%;
-  border-bottom: solid 1px #a6a6a6;
-}
-
-.head__table > div {
-  /* background: red; */
-  padding-right: 10px;
-  border-right: solid 1px #a6a6a6;
-  width: 40%;
-  padding-left: 10px;
-}
-
-.body__table .item__table > div {
-  /* background: red; */
-  padding-right: 10px;
-
-  width: 40%;
-  padding-left: 10px;
-}
-
-.table {
-  border: solid 1px #a6a6a6;
-}
-
-.head__table > div {
-  width: 40%;
-  padding: 10px;
-  font-weight: 600;
-}
-
-.local,
-.cloud {
-  width: 35% !important;
-}
-
-.item__table > div {
-  padding: 6px;
-}
-
 .title_cloudbox {
   display: flex;
   flex-direction: column;
@@ -135,4 +85,21 @@ p {
 }
 .col-8 {
   width: 100%;
+}
+.list_entry {
+  /* background-color: lightblue; */
+  /* border-style: solid; */
+  /* border-width: 1px; */
+  border-bottom: solid 0.5px #d5d5d5;
+  padding-bottom: 6px;
+  padding-top: 10px;
+}
+tr.head__table th {
+  width: 40%;
+}
+table#gameList td {
+  width: 40%;
+}
+tr.head__table th {
+  border-right: solid 1px #ededed;
 }

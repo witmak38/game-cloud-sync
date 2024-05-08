@@ -1,11 +1,12 @@
 'use strict'
 
 const { app, BrowserWindow, BaseWindow, ipcMain, Menu, Tray } = require('electron')
+app.setName("321");
 const path = require('path')
 // default window settings
 const defaultProps = {
-  width: 700,
-  minWidth: 600,
+  width: 900,
+  minWidth: 900,
   maxWidth: 900,
   height: 400,
   minHeight: 400,
